@@ -15,20 +15,11 @@
       }
     </style>
   </head>
- 
   <body> 
+    <div id="side-bar" class="col-md-3"></div>
+    <h4>Zoom Level: <span id="zoom-level"></span></h4>
     
-  
-
-    <div id="side-bar" class="col-md-8">
-      <button id="btnLocate" class="btn btn-primary btn-block">Locate</button>
-      <button id="btnZocalo" class="btn btn-primary btn-block">ZoomToZocalo</button>
-      <h4>Zoom Level: <span id="zoom-level"></span></h4>
-      <h4>Map Center: <span id="map-center"></span></h4>
-      <h4>Mouse Location: <span id="mouse-location"></span></h4>
-    </div>
-    
-    <div id="mapdiv" class="col-md-12"></div>
+    <div id="mapdiv" class="col-md-9"></div>
 
     <script>
       var mymap;
@@ -70,12 +61,12 @@
           }
         });
 
-        mymap.on("locationfound", function (e) { // find location real time 
+        mymap.on("locationfound", function (e) {
           console.log(e);
           if (mrkCurrentLocation) {
-           mrkCurrentLocation.remove();
+            mrkCurrentLocation.remove();
 
-         }
+          }
           mrkCurrentLocation = L.circle(e.latlng, 
           {radius:e.accuracy/2}).addTo(mymap); // the size of the  circle indicates the accuracy
           mymap.setView(e.latlng, 14);
@@ -91,29 +82,44 @@
         });
         
 
-        mymap.on("moveend", function() {
-          $("#map-center").html(LatLngToArrayString(mymap.getCenter()));
-        });
-
-        mymap.on("mousemove", function(e) {
-          $("#mouse-location").html(LatLngToArrayString(e.latlng)); //get mouse moove coords
-        });
-        $("#btnLocate").click(function() {
-          mymap.locate();
-        }); 
-        $("#btnZocalo").click(function() {
-          mymap.setView([19.42262, -99.13325, 17])
-        })
       });
-
-      function LatLngToArrayString(ll) {
-        console.log(ll);
-        return "["+ll.lat.toFixed(5)+", "+ll.lng.toFixed(5)+"]"; // formating coordinates to display on map
-      }
-
-
-
-
     </script>
-  </body>
+  <!-- Code injected by live-server -->
+<script type="text/javascript">
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script></body>
 </html>
