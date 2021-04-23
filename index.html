@@ -12,33 +12,54 @@
     <style>
       #mapdiv {
         height: 100vh;
+       
       }
     </style>
   </head>
  
   <body> 
-    
+    <div class="container">
+      <div class="row">
+        <div id="side-bar">
+          <button id="btnLocate" class="btn btn-primary btn-block">Locate</button>
+          <button id="btnZocalo" class="btn btn-primary btn-block">ZoomToZocalo</button>
+          <h4>Zoom Level: <span id="zoom-level"></span></h4>
+          <h4>Map Center: <span id="map-center"></span></h4>
+          <h4>Mouse Location: <span id="mouse-location"></span></h4>
+        </div>
+          <div id="mapdiv" class="col-md-9"></div>
+      </div>
+  </div>
+
+
   
 
-    <div id="side-bar" class="col-md-8">
-      <button id="btnLocate" class="btn btn-primary btn-block">Locate</button>
-      <button id="btnZocalo" class="btn btn-primary btn-block">ZoomToZocalo</button>
-      <h4>Zoom Level: <span id="zoom-level"></span></h4>
-      <h4>Map Center: <span id="map-center"></span></h4>
-      <h4>Mouse Location: <span id="mouse-location"></span></h4>
-    </div>
     
-    <div id="mapdiv" class="col-md-12"></div>
+    
+    
 
     <script>
       var mymap;
       var lyrOSM;
       var mrkCurrentLocation;
+      var popZocalo;
 
       $(document).ready(function () {
         var mymap = L.map("mapdiv", { center: [19.4, -99.2], zoom: 13 });
-        var lyrOSM = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png");
+        var lyrOSM = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png"); // could be changed to a better as the personal data // 
         mymap.addLayer(lyrOSM);
+
+        popZocalo = L.popup({maxWidth:200,keepInView:true}); // creating a popup which keeps in the scree//
+        popZocalo.setLatLng([19.42262, -99.13325]);
+        popZocalo.setContent("<h2>Zocalo</h2><img src='img/marker-r&d.png' width='100px'>");
+
+        popExample = L.popup();
+        popExample.setLatLng([19.42262, -99.1859]);
+        popExample.setContent($("#side-bar")[0]);
+        popExample.openOn(mymap); //using  jquery to put inside the popup
+
+
+
 
         mymap.on("click", function (e) {
           if (e.originalEvent.shiftKey) {
@@ -48,10 +69,7 @@
           }
         });
 
-        setInterval(function() {
-          mymap.locate();
-        }, 5000)
-        
+       
 
         mymap.on("contextmenu", function (e) {
           var dtCurrentTime = new Date();
@@ -102,7 +120,8 @@
           mymap.locate();
         }); 
         $("#btnZocalo").click(function() {
-          mymap.setView([19.42262, -99.13325, 17])
+          mymap.setView([19.42262, -99.13325, 17]);
+          mymap.openPopup(popZocalo);
         })
       });
 
