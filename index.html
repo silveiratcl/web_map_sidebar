@@ -20,14 +20,14 @@
   <body> 
     <div class="container">
       <div class="row">
-        <div id="side-bar">
+        <div id="side-bar" class="col-md-3 side-bar">
           <button id="btnLocate" class="btn btn-primary btn-block">Locate</button>
           <button id="btnZocalo" class="btn btn-primary btn-block">ZoomToZocalo</button>
           <h4>Zoom Level: <span id="zoom-level"></span></h4>
           <h4>Map Center: <span id="map-center"></span></h4>
           <h4>Mouse Location: <span id="mouse-location"></span></h4>
         </div>
-          <div id="mapdiv" class="col-md-9"></div>
+          <div id="mapdiv" class="col-md-9 float-rigth" ></div>
       </div>
   </div>
 
@@ -43,20 +43,35 @@
       var lyrOSM;
       var mrkCurrentLocation;
       var popZocalo;
+      var ctlZoom;
+      var ctlAttribute;
+      var ctlScale;
+      
 
       $(document).ready(function () {
-        var mymap = L.map("mapdiv", { center: [19.4, -99.2], zoom: 13 });
+        var mymap = L.map("mapdiv", { center: [19.4, -99.2], zoom: 13,
+        zoomControl:false }); // rips zoomControl
         var lyrOSM = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png"); // could be changed to a better as the personal data // 
         mymap.addLayer(lyrOSM);
+
+        ctlZoom = L.control.zoom({zoomInText:'In', zoomOutText:'Out', 
+        position:'topright'}); //location of th button
+        ctlZoom.addTo(mymap);
+
+        ctlAttribute = L.control.attribution({position:'bottomleft'}).addTo(mymap);
+        ctlAttribute.addAttribution('OSM');
+        ctlAttribute.addAttribution('<a href="https://www.tsilveira.eco.br">Thiago Silveira</a>');
+
+        ctlScale = L.control.scale({position:'bottomleft'}).addTo(mymap); //########stoped here 17
 
         popZocalo = L.popup({maxWidth:200,keepInView:true}); // creating a popup which keeps in the scree//
         popZocalo.setLatLng([19.42262, -99.13325]);
         popZocalo.setContent("<h2>Zocalo</h2><img src='img/marker-r&d.png' width='100px'>");
 
-        popExample = L.popup();
-        popExample.setLatLng([19.42262, -99.1859]);
-        popExample.setContent($("#side-bar")[0]);
-        popExample.openOn(mymap); //using  jquery to put inside the popup
+        //popExample = L.popup();
+        //popExample.setLatLng([19.42262, -99.1859]);
+        //popExample.setContent($("#side-bar")[0]);
+        //popExample.openOn(mymap); //using  jquery to put inside the popup
 
 
 
