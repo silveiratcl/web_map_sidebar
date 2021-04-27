@@ -9,34 +9,39 @@
     <link rel="stylesheet" href="src/css/bootstrap.css" />
     <script src="src/leaflet-src.js"></script>
     <script src="src/jquery-3.6.0.min.js"></script>
+    <script src="plugins/dist/leaflet-control-boxzoom.js"></script> <!--box zoom L.Control.BoxZoom-->
+    <link rel="stylesheet" href="plugins/dist/leaflet-control-boxzoom.css" /> <!--box zoom L.Control.BoxZoom-->
+    <script src="plugins/L.Control.MousePosition.js"></script> <!--mouse position L.Control.BoxZoom-->
+    <link rel="stylesheet" href="plugins/L.Control.MousePosition.css" /> <!--mouse position L.Control.BoxZoom-->
+    <script src="plugins/Leaflet.PolylineMeasure.js"></script> <!--polylines -->
+    <link rel="stylesheet" href="plugins/Leaflet.PolylineMeasure.css" /> <!--polylines -->
+    
+
+
     <style>
       #mapdiv {
         height: 100vh;
-       
       }
     </style>
   </head>
- 
-  <body> 
+
+  <body>
     <div class="container">
       <div class="row">
         <div id="side-bar" class="col-md-3 side-bar">
-          <button id="btnLocate" class="btn btn-primary btn-block">Locate</button>
-          <button id="btnZocalo" class="btn btn-primary btn-block">ZoomToZocalo</button>
+          <button id="btnLocate" class="btn btn-primary btn-block">
+            Locate
+          </button>
+          <button id="btnZocalo" class="btn btn-primary btn-block">
+            ZoomToZocalo
+          </button>
           <h4>Zoom Level: <span id="zoom-level"></span></h4>
           <h4>Map Center: <span id="map-center"></span></h4>
           <h4>Mouse Location: <span id="mouse-location"></span></h4>
         </div>
-          <div id="mapdiv" class="col-md-9 float-rigth" ></div>
+        <div id="mapdiv" class="col-md-9 float-rigth"></div>
       </div>
-  </div>
-
-
-  
-
-    
-    
-    
+    </div>
 
     <script>
       var mymap;
@@ -46,45 +51,60 @@
       var ctlZoom;
       var ctlAttribute;
       var ctlScale;
-      
+      var ctlMouseposition;
+      var ctlMeasure;
 
       $(document).ready(function () {
-        var mymap = L.map("mapdiv", { center: [19.4, -99.2], zoom: 13,
-        zoomControl:false }); // rips zoomControl
-        var lyrOSM = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png"); // could be changed to a better as the personal data // 
+        var mymap = L.map("mapdiv", {
+          center: [19.4, -99.2],
+          zoom: 13,
+          zoomControl: false,
+        }); // rips zoomControl
+        var lyrOSM = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png"); // could be changed to a better as the personal data //
         mymap.addLayer(lyrOSM);
 
-        ctlZoom = L.control.zoom({zoomInText:'In', zoomOutText:'Out', 
-        position:'topright'}); //location of th button
-        ctlZoom.addTo(mymap);
+       // ctlZoom = L.control.zoom({
+         // zoomInText: "In",
+          //zoomOutText: "Out",
+          //position: "topright",
+       // }); //location of th button
+        //ctlZoom.addTo(mymap);
 
-        ctlAttribute = L.control.attribution({position:'bottomleft'}).addTo(mymap);
-        ctlAttribute.addAttribution('OSM');
-        ctlAttribute.addAttribution('<a href="https://www.tsilveira.eco.br">Thiago Silveira</a>');
+        L.Control.boxzoom({ position:'topleft' }).addTo(mymap); // boxzoom
+        ctlMeasure = L.control.polylineMeasure({position: 'topleft'}).addTo(mymap);
 
-        ctlScale = L.control.scale({position:'bottomleft'}).addTo(mymap); //########stoped here 17
+        
 
-        popZocalo = L.popup({maxWidth:200,keepInView:true}); // creating a popup which keeps in the scree//
+        ctlAttribute = L.control
+          .attribution({ position: "bottomleft" })
+          .addTo(mymap);
+        ctlAttribute.addAttribution("OSM");
+        ctlAttribute.addAttribution(
+          '<a href="https://www.tsilveira.eco.br">Thiago Silveira</a>'
+        );
+
+        ctlScale = L.control.scale({ position: "bottomleft" }).addTo(mymap); // set scale on map
+
+        ctlMouseposition = L.control.mousePosition().addTo(mymap); //mouse position
+
+        popZocalo = L.popup({ maxWidth: 200, keepInView: true }); // creating a popup which keeps in the screem//
         popZocalo.setLatLng([19.42262, -99.13325]);
-        popZocalo.setContent("<h2>Zocalo</h2><img src='img/marker-r&d.png' width='100px'>");
+        popZocalo.setContent(
+          "<h2>Zocalo</h2><img src='img/marker-r&d.png' width='100px'>"
+        );
 
         //popExample = L.popup();
         //popExample.setLatLng([19.42262, -99.1859]);
         //popExample.setContent($("#side-bar")[0]);
         //popExample.openOn(mymap); //using  jquery to put inside the popup
 
-
-
-
-        mymap.on("click", function (e) {
-          if (e.originalEvent.shiftKey) {
-            alert(mymap.getZoom());
-          } else {
-            alert(e.latlng.toString());
-          }
-        });
-
-       
+        //mymap.on("click", function (e) {
+        //  if (e.originalEvent.shiftKey) {
+        //    alert(mymap.getZoom());
+        //  } else {
+        //    alert(e.latlng.toString()); // get coordinate on click
+        //  }
+        //});
 
         mymap.on("contextmenu", function (e) {
           var dtCurrentTime = new Date();
@@ -103,51 +123,47 @@
           }
         });
 
-        mymap.on("locationfound", function (e) { // find location real time 
+        mymap.on("locationfound", function (e) {
+          // find location real time
           console.log(e);
           if (mrkCurrentLocation) {
-           mrkCurrentLocation.remove();
-
-         }
-          mrkCurrentLocation = L.circle(e.latlng, 
-          {radius:e.accuracy/2}).addTo(mymap); // the size of the  circle indicates the accuracy
+            mrkCurrentLocation.remove();
+          }
+          mrkCurrentLocation = L.circle(e.latlng, {
+            radius: e.accuracy / 2,
+          }).addTo(mymap); // the size of the  circle indicates the accuracy
           mymap.setView(e.latlng, 14);
         });
 
         mymap.on("locationerror", function (e) {
           console.log(e);
           alert("location was not found");
-        })
+        });
 
-        mymap.on("zoomend", function(){
+        mymap.on("zoomend", function () {
           $("#zoom-level").html(mymap.getZoom());
         });
-        
 
-        mymap.on("moveend", function() {
+        mymap.on("moveend", function () {
           $("#map-center").html(LatLngToArrayString(mymap.getCenter()));
         });
 
-        mymap.on("mousemove", function(e) {
+        mymap.on("mousemove", function (e) {
           $("#mouse-location").html(LatLngToArrayString(e.latlng)); //get mouse moove coords
         });
-        $("#btnLocate").click(function() {
+        $("#btnLocate").click(function () {
           mymap.locate();
-        }); 
-        $("#btnZocalo").click(function() {
+        });
+        $("#btnZocalo").click(function () {
           mymap.setView([19.42262, -99.13325, 17]);
           mymap.openPopup(popZocalo);
-        })
+        });
       });
 
       function LatLngToArrayString(ll) {
         console.log(ll);
-        return "["+ll.lat.toFixed(5)+", "+ll.lng.toFixed(5)+"]"; // formating coordinates to display on map
+        return "[" + ll.lat.toFixed(5) + ", " + ll.lng.toFixed(5) + "]"; // formating coordinates to display on map
       }
-
-
-
-
     </script>
   </body>
 </html>
