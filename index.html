@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="src/leaflet.css " />
     <link rel="stylesheet" href="src/css/bootstrap.css" />
+
     <script src="src/leaflet-src.js"></script>
     <script src="src/jquery-3.6.0.min.js"></script>
     <script src="plugins/dist/leaflet-control-boxzoom.js"></script> <!--box zoom L.Control.BoxZoom-->
@@ -15,6 +16,10 @@
     <link rel="stylesheet" href="plugins/L.Control.MousePosition.css" /> <!--mouse position L.Control.BoxZoom-->
     <script src="plugins/Leaflet.PolylineMeasure.js"></script> <!--polylines -->
     <link rel="stylesheet" href="plugins/Leaflet.PolylineMeasure.css" /> <!--polylines -->
+
+    <link rel="stylesheet" href="plugins/easy-button.css"> <!-- easy button-->
+    <script src="plugins/easy-button.js"></script> <!-- easy button-->
+    <script src="https://kit.fontawesome.com/24ffc22a37.js" crossorigin="anonymous"></script>
     
 
 
@@ -53,6 +58,7 @@
       var ctlScale;
       var ctlMouseposition;
       var ctlMeasure;
+      var ctlEasybutton;
 
       $(document).ready(function () {
         var mymap = L.map("mapdiv", {
@@ -73,6 +79,10 @@
         L.Control.boxzoom({ position:'topleft' }).addTo(mymap); // boxzoom
         ctlMeasure = L.control.polylineMeasure({position: 'topleft'}).addTo(mymap);
 
+        ctlEasybutton = L.easyButton('fas fa-bullseye', function() {
+          mymap.locate();
+
+        }).addTo(mymap); // insert the functions and display with easy button
         
 
         ctlAttribute = L.control
