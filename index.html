@@ -19,6 +19,13 @@
 
     <link rel="stylesheet" href="plugins/easy-button.css"> <!-- easy button-->
     <script src="plugins/easy-button.js"></script> <!-- easy button-->
+
+    <link rel="stylesheet" href="plugins/L.Control.Sidebar.css"> <!-- SIDE BAR-->
+    <script src="plugins/L.Control.Sidebar.js"></script> <!-- SIDE BAR-->
+   
+   
+   
+   
     <script src="https://kit.fontawesome.com/24ffc22a37.js" crossorigin="anonymous"></script>
     
 
@@ -44,7 +51,7 @@
           <h4>Map Center: <span id="map-center"></span></h4>
           <h4>Mouse Location: <span id="mouse-location"></span></h4>
         </div>
-        <div id="mapdiv" class="col-md-9 float-rigth"></div>
+        <div id="mapdiv" class="col-md-12 float-rigth"></div>
       </div>
     </div>
 
@@ -59,6 +66,7 @@
       var ctlMouseposition;
       var ctlMeasure;
       var ctlEasybutton;
+      var ctlSidebar;
 
       $(document).ready(function () {
         var mymap = L.map("mapdiv", {
@@ -79,10 +87,20 @@
         L.Control.boxzoom({ position:'topleft' }).addTo(mymap); // boxzoom
         ctlMeasure = L.control.polylineMeasure({position: 'topleft'}).addTo(mymap);
 
-        ctlEasybutton = L.easyButton('fas fa-bullseye', function() {
-          mymap.locate();
+        //ctlEasybutton = L.easyButton('fas fa-bullseye', function() {
+        //  mymap.locate();
 
-        }).addTo(mymap); // insert the functions and display with easy button
+        //}).addTo(mymap); // insert the functions and display with easy button / incons with fontawesome /here the locate button
+
+        ctlEasybutton = L.easyButton('fas fa-exchange-alt', function() {
+        ctlSidebar.toggle(); // method toggel or show wors in the same way
+        }).addTo(mymap);
+
+
+
+
+        ctlSidebar = L.control.sidebar('side-bar').addTo(mymap); //create side ba with the pluggin
+
         
 
         ctlAttribute = L.control
