@@ -7,27 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="src/leaflet.css " />
     <link rel="stylesheet" href="src/css/bootstrap.css" />
-
+    <link rel="stylesheet" href="plugins/L.Control.MousePosition.css" /><!--mouse position L.Control.BoxZoom-->
+    <link rel="stylesheet" href="plugins/Leaflet.PolylineMeasure.css" /><!--polylines -->
+    <link rel="stylesheet" href="plugins/dist/leaflet-control-boxzoom.css" /><!--box zoom L.Control.BoxZoom-->
+    <link rel="stylesheet" href="plugins/easy-button.css" /><!-- easy button-->
+    <link rel="stylesheet" href="plugins/L.Control.Sidebar.css" /><!-- SIDE BAR-->
+    <link rel="stylesheet" href="plugins/leafleat-open-cage/css/L.Control.OpenCageSearch.css" /> <!-- open cage search-->
+    
+    
+    
     <script src="src/leaflet-src.js"></script>
     <script src="src/jquery-3.6.0.min.js"></script>
-    <script src="plugins/dist/leaflet-control-boxzoom.js"></script> <!--box zoom L.Control.BoxZoom-->
-    <link rel="stylesheet" href="plugins/dist/leaflet-control-boxzoom.css" /> <!--box zoom L.Control.BoxZoom-->
-    <script src="plugins/L.Control.MousePosition.js"></script> <!--mouse position L.Control.BoxZoom-->
-    <link rel="stylesheet" href="plugins/L.Control.MousePosition.css" /> <!--mouse position L.Control.BoxZoom-->
-    <script src="plugins/Leaflet.PolylineMeasure.js"></script> <!--polylines -->
-    <link rel="stylesheet" href="plugins/Leaflet.PolylineMeasure.css" /> <!--polylines -->
-
-    <link rel="stylesheet" href="plugins/easy-button.css"> <!-- easy button-->
-    <script src="plugins/easy-button.js"></script> <!-- easy button-->
-
-    <link rel="stylesheet" href="plugins/L.Control.Sidebar.css"> <!-- SIDE BAR-->
-    <script src="plugins/L.Control.Sidebar.js"></script> <!-- SIDE BAR-->
-   
-   
-   
-   
-    <script src="https://kit.fontawesome.com/24ffc22a37.js" crossorigin="anonymous"></script>
+    <script src="plugins/L.Control.MousePosition.js"></script><!--mouse position L.Control.BoxZoom-->
+    <script src="plugins/Leaflet.PolylineMeasure.js"></script><!--polylines -->
+    <script src="plugins/dist/leaflet-control-boxzoom.js"></script><!--box zoom L.Control.BoxZoom-->
+    <script src="plugins/easy-button.js"></script><!-- easy button-->
+    <script src="plugins/L.Control.Sidebar.js"></script><!-- SIDE BAR-->
+    <script src="plugins/L.Control.Sidebar.js"></script><!-- SIDE BAR-->
+   <script src="plugins/leafleat-open-cage/js/L.Control.OpenCageSearch.js"></script> <!-- open cage search-->
     
+
+    <script src="https://kit.fontawesome.com/24ffc22a37.js" crossorigin="anonymous"></script>
 
 
     <style>
@@ -67,6 +67,7 @@
       var ctlMeasure;
       var ctlEasybutton;
       var ctlSidebar;
+      var ctlSearch;
 
       $(document).ready(function () {
         var mymap = L.map("mapdiv", {
@@ -77,31 +78,34 @@
         var lyrOSM = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png"); // could be changed to a better as the personal data //
         mymap.addLayer(lyrOSM);
 
-       // ctlZoom = L.control.zoom({
-         // zoomInText: "In",
-          //zoomOutText: "Out",
-          //position: "topright",
-       // }); //location of th button
+        // ctlZoom = L.control.zoom({
+        // zoomInText: "In",
+        //zoomOutText: "Out",
+        //position: "topright",
+        // }); //location of th button
         //ctlZoom.addTo(mymap);
 
-        L.Control.boxzoom({ position:'topleft' }).addTo(mymap); // boxzoom
-        ctlMeasure = L.control.polylineMeasure({position: 'topleft'}).addTo(mymap);
+        L.Control.boxzoom({ position: "topleft" }).addTo(mymap); // boxzoom
+        ctlMeasure = L.control
+          .polylineMeasure({ position: "topleft" })
+          .addTo(mymap);
 
         //ctlEasybutton = L.easyButton('fas fa-bullseye', function() {
         //  mymap.locate();
 
         //}).addTo(mymap); // insert the functions and display with easy button / incons with fontawesome /here the locate button
 
-        ctlEasybutton = L.easyButton('fas fa-exchange-alt', function() {
-        ctlSidebar.toggle(); // method toggel or show wors in the same way
+        ctlEasybutton = L.easyButton("fas fa-exchange-alt", function () {
+          ctlSidebar.toggle(); // method toggle or show open/close in the same way
         }).addTo(mymap);
 
+        ctlSidebar = L.control.sidebar("side-bar").addTo(mymap); //create side ba with the pluggin
+
+        ctlSearch = L.Control.openCageSearch({key:
+        'ctlAttribute183a7ce14b3b461fa492a9a9bdd5880b', limit:10}).addTo(mymap); //creates field to search adresses/locations
 
 
 
-        ctlSidebar = L.control.sidebar('side-bar').addTo(mymap); //create side ba with the pluggin
-
-        
 
         ctlAttribute = L.control
           .attribution({ position: "bottomleft" })
