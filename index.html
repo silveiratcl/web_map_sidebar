@@ -24,7 +24,8 @@
     <script src="plugins/easy-button.js"></script><!-- easy button-->
     <script src="plugins/L.Control.Sidebar.js"></script><!-- SIDE BAR-->
     <script src="plugins/L.Control.Sidebar.js"></script><!-- SIDE BAR-->
-   <script src="plugins/leafleat-open-cage/js/L.Control.OpenCageSearch.js"></script> <!-- open cage search-->
+    <script src="plugins/leafleat-open-cage/js/L.Control.OpenCageSearch.js"></script> <!-- open cage search-->
+    <script src="plugins/leaflet-providers.js"></script> <!-- leafleet providers-->
     
 
     <script src="https://kit.fontawesome.com/24ffc22a37.js" crossorigin="anonymous"></script>
@@ -75,7 +76,7 @@
           zoom: 13,
           zoomControl: false,
         }); // rips zoomControl
-        var lyrOSM = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png"); // could be changed to a better as the personal data //
+        var lyrOSM = L.tileLayer.provider("Stadia.AlidadeSmoothDark"); // could be changed to a better as the personal data //
         mymap.addLayer(lyrOSM);
 
         // ctlZoom = L.control.zoom({
