@@ -32,8 +32,14 @@
 
 
     <style>
+      * {
+  margin: 0;
+  padding: 0;
+      }
       #mapdiv {
         height: 100vh;
+        
+       
       }
     </style>
   </head>
@@ -59,6 +65,11 @@
     <script>
       var mymap;
       var lyrOSM;
+      var lyrWatercolor;
+      var lyrTop;
+      var lyrImagery;
+      var lyrOutdoors;
+      var lyrWatercolor;
       var mrkCurrentLocation;
       var popZocalo;
       var ctlZoom;
@@ -69,15 +80,35 @@
       var ctlEasybutton;
       var ctlSidebar;
       var ctlSearch;
+      var ctlLayers;
+      var objBasemaps;
+      var objOverlays;
 
       $(document).ready(function () {
         var mymap = L.map("mapdiv", {
           center: [19.4, -99.2],
           zoom: 13,
-          zoomControl: false,
+          zoomControl: false, 
+          attributionControl: false
         }); // rips zoomControl
-        var lyrOSM = L.tileLayer.provider("Stadia.AlidadeSmoothDark"); // could be changed to a better as the personal data //
+        lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
+        lyrTopo = L.tileLayer.provider("OpenTopoMap");
+        lyrImagery = L.tileLayer.provider("Esri.WorldImagery");
+        lyrOutdoors = L.tileLayer.provider("Thunderforest.Outdoors");
+        lyrWatercolor = L.tileLayer.provider("Stamen.Watercolor"); // could be changed to a better as the personal data //
         mymap.addLayer(lyrOSM);
+
+        objBasemaps = {
+          "Open Street Maps": lyrOSM,
+          "Topo Map": lyrTopo,
+          "Imagery": lyrImagery,
+          "Outdoors": lyrOutdoors,
+          "Watercolor": lyrWatercolor
+        };
+
+        objOverlays = {};
+ 
+        ctlLayers = L.control.layers(objBasemaps, objOverlays).addTo(mymap);
 
         // ctlZoom = L.control.zoom({
         // zoomInText: "In",
