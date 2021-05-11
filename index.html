@@ -7,47 +7,62 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="src/leaflet.css " />
     <link rel="stylesheet" href="src/css/bootstrap.css" />
-    <link rel="stylesheet" href="plugins/L.Control.MousePosition.css" /><!--mouse position L.Control.BoxZoom-->
-    <link rel="stylesheet" href="plugins/Leaflet.PolylineMeasure.css" /><!--polylines -->
-    <link rel="stylesheet" href="plugins/dist/leaflet-control-boxzoom.css" /><!--box zoom L.Control.BoxZoom-->
-    <link rel="stylesheet" href="plugins/easy-button.css" /><!-- easy button-->
-    <link rel="stylesheet" href="plugins/L.Control.Sidebar.css" /><!-- SIDE BAR-->
-    <link rel="stylesheet" href="plugins/leafleat-open-cage/css/L.Control.OpenCageSearch.css" /> <!-- open cage search-->
-    
-    
-    
+    <link rel="stylesheet" href="plugins/L.Control.MousePosition.css" />
+    <!--mouse position L.Control.BoxZoom-->
+    <link rel="stylesheet" href="plugins/Leaflet.PolylineMeasure.css" />
+    <!--polylines -->
+    <link rel="stylesheet" href="plugins/dist/leaflet-control-boxzoom.css" />
+    <!--box zoom L.Control.BoxZoom-->
+    <link rel="stylesheet" href="plugins/easy-button.css" />
+    <!-- easy button-->
+    <link rel="stylesheet" href="plugins/L.Control.Sidebar.css" />
+    <!-- SIDE BAR-->
+    <link
+      rel="stylesheet"
+      href="plugins/leafleat-open-cage/css/L.Control.OpenCageSearch.css"
+    />
+    <!-- open cage search-->
+
     <script src="src/leaflet-src.js"></script>
     <script src="src/jquery-3.6.0.min.js"></script>
-    <script src="plugins/L.Control.MousePosition.js"></script><!--mouse position L.Control.BoxZoom-->
-    <script src="plugins/Leaflet.PolylineMeasure.js"></script><!--polylines -->
-    <script src="plugins/dist/leaflet-control-boxzoom.js"></script><!--box zoom L.Control.BoxZoom-->
-    <script src="plugins/easy-button.js"></script><!-- easy button-->
-    <script src="plugins/L.Control.Sidebar.js"></script><!-- SIDE BAR-->
-    <script src="plugins/L.Control.Sidebar.js"></script><!-- SIDE BAR-->
-    <script src="plugins/leafleat-open-cage/js/L.Control.OpenCageSearch.js"></script> <!-- open cage search-->
-    <script src="plugins/leaflet-providers.js"></script> <!-- leafleet providers-->
-    
-
-    <script src="https://kit.fontawesome.com/24ffc22a37.js" crossorigin="anonymous"></script>
-
+    <script src="plugins/L.Control.MousePosition.js"></script>
+    <!--mouse position L.Control.BoxZoom-->
+    <script src="plugins/Leaflet.PolylineMeasure.js"></script>
+    <!--polylines -->
+    <script src="plugins/dist/leaflet-control-boxzoom.js"></script>
+    <!--box zoom L.Control.BoxZoom-->
+    <script src="plugins/easy-button.js"></script>
+    <!-- easy button-->
+    <script src="plugins/L.Control.Sidebar.js"></script>
+    <!-- SIDE BAR-->
+    <script src="plugins/L.Control.Sidebar.js"></script>
+    <!-- SIDE BAR-->
+    <script src="plugins/leafleat-open-cage/js/L.Control.OpenCageSearch.js"></script>
+    <!-- open cage search-->
+    <script src="plugins/leaflet-providers.js"></script>
+    <!-- leafleet providers-->
+    <script
+      src="https://kit.fontawesome.com/24ffc22a37.js"
+      crossorigin="anonymous"
+    ></script>
 
     <style>
-      * {
-  margin: 0;
-  padding: 0;
-      }
-      #mapdiv { 
+      body {
+            padding: 0;
+            margin: 0;
+        }
+        html, body, #mapdiv {
         height: 100vh;
-        
-       
+        width: 100%;
       }
+     
     </style>
   </head>
 
   <body>
     <div class="container">
       <div class="row">
-        <div id="side-bar" class="col-md-3 side-bar">
+        <div id="side-bar" class="col-md-2 side-bar">
           <button id="btnLocate" class="btn btn-primary btn-block">
             Locate
           </button>
@@ -88,8 +103,8 @@
         var mymap = L.map("mapdiv", {
           center: [19.4, -99.2],
           zoom: 13,
-          zoomControl: false, 
-          attributionControl: false
+          zoomControl: false,
+          attributionControl: false,
         }); // rips zoomControl
         lyrOSM = L.tileLayer.provider("OpenStreetMap.Mapnik");
         lyrTopo = L.tileLayer.provider("OpenTopoMap");
@@ -101,13 +116,13 @@
         objBasemaps = {
           "Open Street Maps": lyrOSM,
           "Topo Map": lyrTopo,
-          "Imagery": lyrImagery,
-          "Outdoors": lyrOutdoors,
-          "Watercolor": lyrWatercolor
+          Imagery: lyrImagery,
+          Outdoors: lyrOutdoors,
+          Watercolor: lyrWatercolor,
         };
 
         objOverlays = {};
- 
+
         ctlLayers = L.control.layers(objBasemaps, objOverlays).addTo(mymap);
 
         // ctlZoom = L.control.zoom({
@@ -133,11 +148,10 @@
 
         ctlSidebar = L.control.sidebar("side-bar").addTo(mymap); //create side ba with the pluggin
 
-        ctlSearch = L.Control.openCageSearch({key:
-        'ctlAttribute183a7ce14b3b461fa492a9a9bdd5880b', limit:10}).addTo(mymap); //creates field to search adresses/locations
-
-
-
+        ctlSearch = L.Control.openCageSearch({
+          key: "ctlAttribute183a7ce14b3b461fa492a9a9bdd5880b",
+          limit: 10,
+        }).addTo(mymap); //creates field to search adresses/locations
 
         ctlAttribute = L.control
           .attribution({ position: "bottomleft" })
