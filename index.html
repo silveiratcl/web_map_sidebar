@@ -67,7 +67,10 @@
             Locate
           </button>
           <button id="btnZocalo" class="btn btn-primary btn-block">
-            ZoomToZocalo
+            Zoom To Zocalo
+          </button>
+          <button id="btnCorrego" class="btn btn-primary btn-block">
+            Zoom To corrego
           </button>
           <h4>Zoom Level: <span id="zoom-level"></span></h4>
           <h4>Map Center: <span id="map-center"></span></h4>
@@ -86,6 +89,7 @@
       var lyrOutdoors;
       var lyrWatercolor;
       var mrkCurrentLocation;
+      var mrkCorrego;
       var popZocalo;
       var ctlZoom;
       var ctlAttribute;
@@ -171,6 +175,9 @@
           "<h2>Zocalo</h2><img src='img/marker-r&d.png' width='100px'>"
         );
 
+          mrkCorrego = L.marker([-27.59537, -48.50987],{draggable:true}).addTo(mymap); //simple draggable marker//
+        mrkCorrego.bindTooltip("Parque Municipal do Córrego"); 
+
         //popExample = L.popup();
         //popExample.setLatLng([19.42262, -99.1859]);
         //popExample.setContent($("#side-bar")[0]);
@@ -229,14 +236,26 @@
         mymap.on("mousemove", function (e) {
           $("#mouse-location").html(LatLngToArrayString(e.latlng)); //get mouse moove coords
         });
+
+        mrkCorrego.on('dragend', function() {
+          mrkCorrego.setTooltipContent("Current Location:"
+          +mrkCorrego.getLatLng().toString()+"<br>"+"Distance to Corrego:"+mrkCorrego.getLatLng().distanceTo([-27.59537, -48.505987]).toFixed(0));
+         })
+
         $("#btnLocate").click(function () {
           mymap.locate();
         });
+        $("#btnCorrego").click(function(){
+          mymap.setView([-27.59537, -48.50987], 17);
+          mrkCorrego.setLatLng([-27.59537, -48.50987]);
+          markCorrego.setTooltipContent("Parque do Corrego");
+        })
+          
         $("#btnZocalo").click(function () {
-          mymap.setView([19.42262, -99.13325, 17]);
+          mymap.setView([19.42262, -99.13325],17);
           mymap.openPopup(popZocalo);
         });
-      });
+      })
 
       function LatLngToArrayString(ll) {
         console.log(ll);
