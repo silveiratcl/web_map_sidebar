@@ -72,6 +72,9 @@
           <button id="btnCorrego" class="btn btn-primary btn-block">
             Zoom To corrego
           </button>
+          <button id="btnBikeRoute" class="btn btn-primary btn-block">
+            Zoom To Bike Route
+          </button>
           <h4>Zoom Level: <span id="zoom-level"></span></h4>
           <h4>Map Center: <span id="map-center"></span></h4>
           <h4>Mouse Location: <span id="mouse-location"></span></h4>
@@ -90,6 +93,7 @@
       var lyrWatercolor;
       var mrkCurrentLocation;
       var mrkCorrego;
+      var plnBikeRoute;
       var popZocalo;
       var ctlZoom;
       var ctlAttribute;
@@ -178,6 +182,9 @@
           mrkCorrego = L.marker([-27.59537, -48.50987],{draggable:true}).addTo(mymap); //simple draggable marker//
         mrkCorrego.bindTooltip("Parque Municipal do Córrego"); 
 
+        plnBikeRoute = L.polyline([[[19.4138, -99.1876], [19.4167, -99.188], [19.4165, -99.1873], [19.4214, -99.1872], 
+        [19.4215, -99.1841], [19.4258, -99.1843], [19.4259, -99.1852]],[[19.4215, -99.1865], [19.4251, -99.1881], [19.4246, -99.1843]]], {color:"red"}).addTo(mymap);
+
         //popExample = L.popup();
         //popExample.setLatLng([19.42262, -99.1859]);
         //popExample.setContent($("#side-bar")[0]);
@@ -249,6 +256,10 @@
           mymap.setView([-27.59537, -48.50987], 17);
           mrkCorrego.setLatLng([-27.59537, -48.50987]);
           markCorrego.setTooltipContent("Parque do Corrego");
+        })
+
+        $("#btnBikeRoute").click(function(){
+          mymap.fitBounds(plnBikeRoute.getBounds());
         })
           
         $("#btnZocalo").click(function () {
