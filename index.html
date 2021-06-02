@@ -48,14 +48,15 @@
 
     <style>
       body {
-            padding: 0;
-            margin: 0;
-        }
-        html, body, #mapdiv {
+        padding: 0;
+        margin: 0;
+      }
+      html,
+      body,
+      #mapdiv {
         height: 100vh;
         width: 100%;
       }
-     
     </style>
   </head>
 
@@ -94,6 +95,7 @@
       var mrkCurrentLocation;
       var mrkCorrego;
       var plnBikeRoute;
+      var plyParks;
       var popZocalo;
       var ctlZoom;
       var ctlAttribute;
@@ -129,7 +131,64 @@
           Watercolor: lyrWatercolor,
         };
 
-        objOverlays = {};
+        mrkCorrego = L.marker([-27.59537, -48.50987], {
+          draggable: true,
+        }).addTo(mymap); //simple draggable marker//
+        mrkCorrego.bindTooltip("Parque Municipal do Córrego");
+
+        plyParks = L.polygon(
+          [
+            [
+              [
+                [19.4068, -99.2015],
+                [19.4166, -99.1803],
+                [19.4299, -99.1825],
+                [19.4191, -99.2056],
+              ],
+              [
+                [19.4216, -99.1853],
+                [19.4217, -99.1843],
+                [19.4241, -99.1848],
+                [19.4245, -99.1872],
+              ],
+            ],
+            [
+              [
+                [19.4042, -99.1895],
+                [19.405, -99.1884],
+                [19.4076, -99.1898],
+                [19.4055, -99.1909],
+              ],
+            ],
+          ],
+          { color: "red", fillColor: "yellow", fillOpacity: 0.8 }
+        ).addTo(mymap);
+
+        plnBikeRoute = L.polyline(
+          [
+            [
+              [19.4138, -99.1876],
+              [19.4167, -99.188],
+              [19.4165, -99.1873],
+              [19.4214, -99.1872],
+              [19.4215, -99.1841],
+              [19.4258, -99.1843],
+              [19.4259, -99.1852],
+            ],
+            [
+              [19.4215, -99.1865],
+              [19.4251, -99.1881],
+              [19.4246, -99.1843],
+            ],
+          ],
+          { color: "purple" }
+        ).addTo(mymap);
+
+        objOverlays = {  
+          "Corrego":mrkCorrego,
+          "Parks":plyParks, 
+          "Bike Routes":plnBikeRoute
+             };
 
         ctlLayers = L.control.layers(objBasemaps, objOverlays).addTo(mymap);
 
@@ -178,12 +237,6 @@
         popZocalo.setContent(
           "<h2>Zocalo</h2><img src='img/marker-r&d.png' width='100px'>"
         );
-
-          mrkCorrego = L.marker([-27.59537, -48.50987],{draggable:true}).addTo(mymap); //simple draggable marker//
-        mrkCorrego.bindTooltip("Parque Municipal do Córrego"); 
-
-        plnBikeRoute = L.polyline([[[19.4138, -99.1876], [19.4167, -99.188], [19.4165, -99.1873], [19.4214, -99.1872], 
-        [19.4215, -99.1841], [19.4258, -99.1843], [19.4259, -99.1852]],[[19.4215, -99.1865], [19.4251, -99.1881], [19.4246, -99.1843]]], {color:"red"}).addTo(mymap);
 
         //popExample = L.popup();
         //popExample.setLatLng([19.42262, -99.1859]);
@@ -244,29 +297,37 @@
           $("#mouse-location").html(LatLngToArrayString(e.latlng)); //get mouse moove coords
         });
 
-        mrkCorrego.on('dragend', function() {
-          mrkCorrego.setTooltipContent("Current Location:"
-          +mrkCorrego.getLatLng().toString()+"<br>"+"Distance to Corrego:"+mrkCorrego.getLatLng().distanceTo([-27.59537, -48.505987]).toFixed(0));
-         })
+        mrkCorrego.on("dragend", function () {
+          mrkCorrego.setTooltipContent(
+            "Current Location:" +
+              mrkCorrego.getLatLng().toString() +
+              "<br>" +
+              "Distance to Corrego:" +
+              mrkCorrego
+                .getLatLng()
+                .distanceTo([-27.59537, -48.505987])
+                .toFixed(0)
+          );
+        });
 
         $("#btnLocate").click(function () {
           mymap.locate();
         });
-        $("#btnCorrego").click(function(){
+        $("#btnCorrego").click(function () {
           mymap.setView([-27.59537, -48.50987], 17);
           mrkCorrego.setLatLng([-27.59537, -48.50987]);
           markCorrego.setTooltipContent("Parque do Corrego");
-        })
+        });
 
-        $("#btnBikeRoute").click(function(){
+        $("#btnBikeRoute").click(function () {
           mymap.fitBounds(plnBikeRoute.getBounds());
-        })
-          
+        });
+
         $("#btnZocalo").click(function () {
-          mymap.setView([19.42262, -99.13325],17);
+          mymap.setView([19.42262, -99.13325], 17);
           mymap.openPopup(popZocalo);
         });
-      })
+      });
 
       function LatLngToArrayString(ll) {
         console.log(ll);
